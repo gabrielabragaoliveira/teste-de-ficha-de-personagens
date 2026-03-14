@@ -1,6 +1,7 @@
+import streamlit as st
+import pandas as pd
 import os
 import shutil
-from google.colab import files
 
 pasta_projeto = "creche_vi_streamlit"
 pasta_fotos = f"{pasta_projeto}/fotos"
