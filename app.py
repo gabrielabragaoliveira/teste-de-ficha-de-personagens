@@ -135,4 +135,3 @@ print("\n📦 A zipar o projeto perfeito para o Streamlit...")
 shutil.make_archive(pasta_projeto, 'zip', pasta_projeto)
 
 print("🚀 A iniciar a transferência do ficheiro ZIP...")
-files.download(f"{pasta_projeto}.zip")
