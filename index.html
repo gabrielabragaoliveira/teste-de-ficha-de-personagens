@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creche da Vi - Character Compass</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f6f8; color: #333; margin: 0; padding: 20px; }
+        h1 { text-align: center; font-size: 2.5rem; margin-bottom: 30px; color: #1a1a1a; }
+        .compass-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
+        .card { background-color: #ffffff; border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); padding: 25px 20px; display: flex; flex-direction: column; align-items: center; transition: transform 0.2s ease-in-out; }
+        .card:hover { transform: translateY(-5px); }
+        .avatar-link { display: block; margin-bottom: 20px; transition: opacity 0.2s; }
+        .avatar-link:hover { opacity: 0.8; }
+        .avatar { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; background-color: #e9ecef; border: 4px solid #f0f0f0; display: block; }
+        .info { width: 100%; text-align: center; margin-bottom: 15px; }
+        .info p { margin: 8px 0; font-size: 1.1rem; }
+        .info strong { color: #000; }
+        .summary { width: 100%; font-size: 0.95rem; color: #555; text-align: justify; line-height: 1.5; border-top: 1px solid #eee; padding-top: 15px; margin-top: auto; }
+    </style>
+</head>
+<body>
+    <h1>Creche da Vi<br>Character Compass</h1>
+    <div class="compass-container">
+
+        <div class="card">
+            <a href="fotos/Anitta.png" target="_blank" class="avatar-link" title="Ver imagem de Anitta">
+                <img class="avatar" src="fotos/Anitta.png" alt="Foto de Anitta" loading="lazy">
+            </a>
+            <div class="info">
+                <p><strong>Nome:</strong> Anitta</p>
+                <p><strong>Local:</strong> Zaun</p>
+                <p><strong>Ocupação:</strong> Criança</p>
+            </div>
+            <p class="summary">Filha de seis anos de Loren e Maria. É amiga de Isha e adora jogar futebol com os vizinhos, tendo pedido para levar seus amigos à festa em Piltover.</p>
+        </div>
+    
+        <div class="card">
+            <a href="fotos/Caitlyn Kirimman.jpg" target="_blank" class="avatar-link" title="Ver imagem de Caitlyn Kiramman">
+                <img class="avatar" src="fotos/Caitlyn Kirimman.jpg" alt="Foto de Caitlyn Kiramman" loading="lazy">
+            </a>
+            <div class="info">
+                <p><strong>Nome:</strong> Caitlyn Kiramman (Cupcake)</p>
+                <p><strong>Local:</strong> Piltover</p>
+                <p><strong>Ocupação:</strong> Socialite / Herdeira</p>
+            </div>
+            <p class="summary">Herdeira do Grupo de Energia Sustentável Kiramman e socialite de Piltover. Vive um dilema entre manter as aparências exigidas pela mãe e seus próprios desejos amorosos. Ficou instantaneamente atraída por Vi após um esbarrão na festa infantil.</p>
+        </div>
+    
+        <div class="card">
+            <a href="fotos/Cassandra Kirimman.jpg" target="_blank" class="avatar-link" title="Ver imagem de Cassandra Kiramman">
+                <img class="avatar" src="fotos/Cassandra Kirimman.jpg" alt="Foto de Cassandra Kiramman" loading="lazy">
+            </a>
+            <div class="info">
+                <p><strong>Nome:</strong> Cassandra Kiramman (Júnior)</p>
+                <p><strong>Local:</strong> Piltover</p>
+                <p><strong>Ocupação:</strong> Chefe dos negócios da família</p>
+            </div>
+            <p class="summary">Mãe de Caitlyn e atual controladora dos negócios e da imagem da família Kiramman. É rigorosa, preocupada com a mídia e exige que Caitlyn participe de eventos sociais e cuide dos sobrinhos.</p>
+        </div>
+    
+        <div class="card">
+            <a href="fotos/Divania Juniper.png" target="_blank" class="avatar-link" title="Ver imagem de Divania Juniper">
+                <img class="avatar" src="fotos/Divania Juniper.png" alt="Foto de Divania Juniper" loading="lazy">
+            </a>
+            <div class="info">
+                <p><strong>Nome:</strong> Divania Juniper (Diva de Zaun)</p>
+                <p><strong>Local:</strong> Água Mansa (Prisão)</p>
+                <p><strong>Ocupação:</strong> Cantora de rock / Detenta</p>
+            </div>
+            <p class="summary">Namorada de Vi e cantora de uma banda de rock. Foi presa em Água Mansa após um show clandestino terminar em vandalismo e usa uma prótese na perna. Vi aceitou os abusos de Margot na cadeia para mantê-la protegida.</p>
+        </div>
+    
+        <div class="card">
+            <a href="fotos/Ekko.jpg" target="_blank" class="avatar-link" title="Ver imagem de Ekko">
+                <img class="avatar" src="fotos/Ekko.jpg" alt="Foto de Ekko" loading="lazy">
+            </a>
+            <div class="info">
+                <p><strong>Nome:</strong> Ekko (Chefinho)</p>
+                <p><strong>Local:</strong> Zaun</p>
+                <p><strong>Ocupação:</strong> Amigo de Jinx e Vi</p>
+            </div>
+            <p class="summary">Amigo de longa data de Vi e Jinx. É namorado de Ezreal e se mostra o mais sensato, puritano e contido diante das brincadeiras pesadas de Jinx e Luxanna.</p>
+        </div>
+    
+        <div class="card">
+            <a href="https://ui-avatars.com/api/?name=Eleonor%20Kiramman&background=random&color=fff&size=150" target="_blank" class="avatar-link" title="Ver imagem de Eleonor Kiramman">
+                <img class="avatar" src="https://ui-avatars.com/api/?name=Eleonor%20Kiramman&background=random&color=fff&size=150" alt="Foto de Eleonor Kiramman" loading="lazy">
+            </a>
+            <div class="info">
+                <p><strong>Nome:</strong> Eleonor Kiramman</p>
+                <p><strong>Local:</strong> Piltover</p>
+                <p><strong>Ocupação:</strong> Criança</p>
+            </div>
+            <p class="summary">Prima pequena de Caitlyn, apelidada de "Chata Kiramman". É uma criança difícil e manipuladora que adora barganhar por doces e privilégios para obedecer.</p>
+        </div>
+    
+        <div class="card">
+            <a href="fotos/Ezreal.jpg" target="_blank" class="avatar-link" title="Ver imagem de Ezreal">
+                <img class="avatar" src="fotos/Ezreal.jpg" alt="Foto de Ezreal" loading="lazy">
+            </a>
+            <div class="info">
+                <p><strong>Nome:</strong> Ezreal</p>
+                <p><strong>Local:</strong> Piltover / Zaun</p>
+                <p><strong>Ocupação:</strong> Namorado de Ekko</p>
+            </div>
+            <p class="summary">Atual namorado de Ekko e ex-namorado de Luxanna. Continua amigo de Luxanna, o que confunde Jinx sobre a dinâmica deles.</p>
+        </div>
+    
+        <div class="card">
+            <a href="fotos/Felícia.png" target="_blank" class="avatar-link" title="Ver imagem de Felícia">
+                <img class="avatar" src="fotos/Felícia.png" alt="Foto de Felícia" loading="lazy">
+            </a>
+            <div class="info">
+                <p><strong>Nome:</strong> Felícia (Abuela)</p>
+                <p><strong>Local:</strong> Zaun</p>
+                <p><strong>Ocupação:</strong> Aposentada</p>
+            </div>
+            <p class="summary">Avó materna da Vi e Jinx, conhecida por sua doçura e vício em novelas mexicanas antigas. É o pilar amoroso da família, tendo acolhido Vi após o despejo sem julgamentos.</p>
+        </div>
+    
+        <div class="card">
+            <a href="fotos/Isha.jpg" target="_blank" class="avatar-link" title="Ver imagem de Isha">
+                <img class="avatar" src="fotos/Isha.jpg" alt="Foto de Isha" loading="lazy">
+            </a>
+            <div class="info">
+                <p><strong>Nome:</strong> Isha</p>
+                <p><strong>Local:</strong> Zaun</p>
+                <p><strong>Ocupação:</strong> Escoteira / Estudante</p>
+            </div>
+            <p class="summary">Menina de rua adotada por Jinx, tornando-se sobrinha-irmã de Vi. Tem cerca de oito anos, é muito inteligente e desenvolveu mutismo seletivo, comunicando-se fluentemente por linguagem de sinais.</p>
+        </div>
+    
+        <div class="card">
+            <a href="fotos/Jinx.jpg" target="_blank" class="avatar-link" title="Ver imagem de Jinx">
+                <img class="avatar" src="fotos/Jinx.jpg" alt="Foto de Jinx" loading="lazy">
+            </a>
+            <div class="info">
+                <p><strong>Nome:</strong> Jinx (Powder)</p>
+                <p><strong>Local:</strong> Zaun</p>
+                <p><strong>Ocupação:</strong> Trabalhadora de demolidora</p>
+            </div>
+            <p class="summary">Irmã caçula de Vi e mãe adotiva de Isha. Trabalha em uma demolidora, tem uma personalidade caótica, ciumenta e recentemente assumiu seus sentimentos intensos por Luxanna.</p>
+        </div>
+    
+        <div class="card">
+            <a href="https://ui-avatars.com/api/?name=Kevin&background=random&color=fff&size=150" target="_blank" class="avatar-link" title="Ver imagem de Kevin">
+                <img class="avatar" src="https://ui-avatars.com/api/?name=Kevin&background=random&color=fff&size=150" alt="Foto de Kevin" loading="lazy">
+            </a>
+            <div class="info">
+                <p><strong>Nome:</strong> Kevin</p>
+                <p><strong>Local:</strong> Zaun</p>
+                <p><strong>Ocupação:</strong> Estudante / Pré-adolescente</p>
+            </div>
+            <p class="summary">Pré-adolescente vizinho de Anitta que pegou carona para a festa em Piltover. Seu ceticismo sobre lobisomens irritou Vi, que lhe deu um choque de realidade sobre a prisão.</p>
+        </div>
+    
+        <div class="card">
+            <a href="fotos/Loren 1.jpg" target="_blank" class="avatar-link" title="Ver imagem de Loren">
+                <img class="avatar" src="fotos/Loren 1.jpg" alt="Foto de Loren" loading="lazy">
+            </a>
+            <div class="info">
+                <p><strong>Nome:</strong> Loren</p>
+                <p><strong>Local:</strong> Zaun</p>
+                <p><strong>Ocupação:</strong> Trabalhador</p>
+            </div>
+            <p class="summary">Amigo leal de Vi que alugou o sobrado nos fundos da casa da Abuela. Luta contra o alcoolismo e a depressão devido aos abandonos de sua esposa, Maria.</p>
+        </div>
+    
+        <div class="card">
+            <a href="fotos/Luxanna.jpg" target="_blank" class="avatar-link" title="Ver imagem de Luxanna Stemmaguarda">
+                <img class="avatar" src="fotos/Luxanna.jpg" alt="Foto de Luxanna Stemmaguarda" loading="lazy">
+            </a>
+            <div class="info">
+                <p><strong>Nome:</strong> Luxanna Stemmaguarda (Lux)</p>
+                <p><strong>Local:</strong> Demacia / Piltover</p>
+                <p><strong>Ocupação:</strong> Estudante universitária</p>
+            </div>
+            <p class="summary">Estudante de Demacia que mora em Piltover. É amiga de Jinx, nutre sentimentos profundos por ela e é surpreendentemente desinibida intimamente.</p>
+        </div>
+    
+        <div class="card">
+            <a href="fotos/Maddie.jpg" target="_blank" class="avatar-link" title="Ver imagem de Maddie">
+                <img class="avatar" src="fotos/Maddie.jpg" alt="Foto de Maddie" loading="lazy">
+            </a>
+            <div class="info">
+                <p><strong>Nome:</strong> Maddie</p>
+                <p><strong>Local:</strong> Piltover</p>
+                <p><strong>Ocupação:</strong> Assessora</p>
+            </div>
+            <p class="summary">Assessora de imprensa e parceira casual de Caitlyn. Tem um perfil submisso na cama, além de ser intensamente carente e emocionalmente dependente de Caitlyn.</p>
+        </div>
+    
+        <div class="card">
+            <a href="fotos/Margot.jpg" target="_blank" class="avatar-link" title="Ver imagem de Margot">
+                <img class="avatar" src="fotos/Margot.jpg" alt="Foto de Margot" loading="lazy">
+            </a>
+            <div class="info">
+                <p><strong>Nome:</strong> Margot (Madrinha E)</p>
+                <p><strong>Local:</strong> Água Mansa (Prisão)</p>
+                <p><strong>Ocupação:</strong> Baronesa Química / Dona da Vyx</p>
+            </div>
+            <p class="summary">Rica e poderosa Baronesa Química que comandava seus negócios de dentro da prisão. Obcecada por Vi, usou a fragilidade de Juniper para chantagear a protagonista.</p>
+        </div>
+    
+        <div class="card">
+            <a href="https://ui-avatars.com/api/?name=Maria&background=random&color=fff&size=150" target="_blank" class="avatar-link" title="Ver imagem de Maria">
+                <img class="avatar" src="https://ui-avatars.com/api/?name=Maria&background=random&color=fff&size=150" alt="Foto de Maria" loading="lazy">
+            </a>
+            <div class="info">
+                <p><strong>Nome:</strong> Maria</p>
+                <p><strong>Local:</strong> Zaun</p>
+                <p><strong>Ocupação:</strong> Desconhecida</p>
+            </div>
+            <p class="summary">Esposa instável de Loren. Costuma abandoná-lo frequentemente por outros homens, causando grande sofrimento a ele.</p>
+        </div>
+    
+        <div class="card">
+            <a href="fotos/Sarah Fortune.jpg" target="_blank" class="avatar-link" title="Ver imagem de Sarah Fortune">
+                <img class="avatar" src="fotos/Sarah Fortune.jpg" alt="Foto de Sarah Fortune" loading="lazy">
+            </a>
+            <div class="info">
+                <p><strong>Nome:</strong> Sarah Fortune</p>
+                <p><strong>Local:</strong> Piltover</p>
+                <p><strong>Ocupação:</strong> Caçadora de recompensas</p>
+            </div>
+            <p class="summary">Caçadora de recompensas de Piltover e amiga íntima com benefícios de Caitlyn. Serve como confidente sobre a misteriosa mulher de Zaun.</p>
+        </div>
+    
+        <div class="card">
+            <a href="https://ui-avatars.com/api/?name=Sebastian%20Kiramman&background=random&color=fff&size=150" target="_blank" class="avatar-link" title="Ver imagem de Sebastian Kiramman">
+                <img class="avatar" src="https://ui-avatars.com/api/?name=Sebastian%20Kiramman&background=random&color=fff&size=150" alt="Foto de Sebastian Kiramman" loading="lazy">
+            </a>
+            <div class="info">
+                <p><strong>Nome:</strong> Sebastian Kiramman</p>
+                <p><strong>Local:</strong> Piltover</p>
+                <p><strong>Ocupação:</strong> Criança</p>
+            </div>
+            <p class="summary">Primo de Caitlyn. Foi subornado com uma espingarda Nerf para brincar com Isha na festa e surpreendeu a todos ao se comunicar fluentemente em Libras com a menina.</p>
+        </div>
+    
+        <div class="card">
+            <a href="fotos/Toddy.png" target="_blank" class="avatar-link" title="Ver imagem de oddy">
+                <img class="avatar" src="fotos/Toddy.png" alt="Foto de oddy" loading="lazy">
+            </a>
+            <div class="info">
+                <p><strong>Nome:</strong> oddy</p>
+                <p><strong>Local:</strong> Zaun</p>
+                <p><strong>Ocupação:</strong> Criança</p>
+            </div>
+            <p class="summary">Menino com cara de nerd escoteiro que é vizinho de Anitta. Foi à festa fantasiado de Teemo.</p>
+        </div>
+    
+        <div class="card">
+            <a href="fotos/Vander.jpg" target="_blank" class="avatar-link" title="Ver imagem de Vander">
+                <img class="avatar" src="fotos/Vander.jpg" alt="Foto de Vander" loading="lazy">
+            </a>
+            <div class="info">
+                <p><strong>Nome:</strong> Vander (Warwick)</p>
+                <p><strong>Local:</strong> Zaun</p>
+                <p><strong>Ocupação:</strong> Policial aposentado / Dono de bar</p>
+            </div>
+            <p class="summary">Pai de Vi e Jinx, ex-policial que perdeu um braço e dono do bar "Última Gota". Vi guarda profundo rancor dele por não tê-la protegido quando foi presa.</p>
+        </div>
+    
+        <div class="card">
+            <a href="fotos/Violet.jpg" target="_blank" class="avatar-link" title="Ver imagem de Violet">
+                <img class="avatar" src="fotos/Violet.jpg" alt="Foto de Violet" loading="lazy">
+            </a>
+            <div class="info">
+                <p><strong>Nome:</strong> Violet (Vi)</p>
+                <p><strong>Local:</strong> Zaun</p>
+                <p><strong>Ocupação:</strong> Desempregada / Ex-detenta</p>
+            </div>
+            <p class="summary">Protagonista da história e ex-detenta que passou sete anos presa injustamente. Desempregada e despejada, luta para reconstruir sua vida com a ajuda de sua família.</p>
+        </div>
+    
+    </div>
+</body>
+</html>
