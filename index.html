@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt-PT">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Creche da Vi - Ficha de personagens</title>
+    <title>Creche da Vi - Ficha de Personagens</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f6f8; color: #333; margin: 0; padding: 20px; }
         h1 { text-align: center; font-size: 2.5rem; margin-bottom: 30px; color: #1a1a1a; }
@@ -17,228 +18,77 @@
         .info p { margin: 8px 0; font-size: 1.1rem; }
         .info strong { color: #000; }
         .summary { width: 100%; font-size: 0.95rem; color: #555; text-align: justify; line-height: 1.5; border-top: 1px solid #eee; padding-top: 15px; margin-top: auto; }
+        .loading { text-align: center; font-size: 1.2rem; color: #666; margin-top: 50px; font-weight: bold; }
     </style>
 </head>
 <body>
     <h1>Creche da Vi<br>Character Compass</h1>
-    <div class="compass-container">
+    
+    <div id="loading" class="loading">A ler os dados da planilha ao vivo... ⏳</div>
+    
+    <div id="compass-container" class="compass-container"></div>
 
-        <div class="card">
-            <a href="https://raw.githubusercontent.com/gabrielabragaoliveira/teste-de-ficha-de-personagens/main/fotos/Anitta.png" target="_blank" class="avatar-link" title="Ver imagem de Anitta">
-                <img class="avatar" src="https://raw.githubusercontent.com/gabrielabragaoliveira/teste-de-ficha-de-personagens/main/fotos/Anitta.png" alt="Foto de Anitta" loading="lazy">
-            </a>
-            <div class="info">
-                <p><strong>Nome:</strong> Anitta</p>
-                <p><strong>Local:</strong> Zaun</p>
-                <p><strong>Ocupação:</strong> Criança</p>
-            </div>
-            <p class="summary">Filha de seis anos de Loren e Maria. É amiga de Isha e adora jogar futebol com os vizinhos, tendo pedido para levar seus amigos à festa em Piltover.</p>
-        </div>
-    
-        <div class="card">
-            <a href="https://raw.githubusercontent.com/gabrielabragaoliveira/teste-de-ficha-de-personagens/main/fotos/Caitlyn%20Kirimman.jpg" target="_blank" class="avatar-link" title="Ver imagem de Caitlyn Kiramman">
-                <img class="avatar" src="https://raw.githubusercontent.com/gabrielabragaoliveira/teste-de-ficha-de-personagens/main/fotos/Caitlyn%20Kirimman.jpg" alt="Foto de Caitlyn Kiramman" loading="lazy">
-            </a>
-            <div class="info">
-                <p><strong>Nome:</strong> Caitlyn Kiramman (Cupcake)</p>
-                <p><strong>Local:</strong> Piltover</p>
-                <p><strong>Ocupação:</strong> Socialite / Herdeira</p>
-            </div>
-            <p class="summary">Herdeira do Grupo de Energia Sustentável Kiramman e socialite de Piltover. Vive um dilema entre manter as aparências exigidas pela mãe e seus próprios desejos amorosos. Ficou instantaneamente atraída por Vi após um esbarrão na festa infantil.</p>
-        </div>
-    
-        <div class="card">
-            <a href="https://raw.githubusercontent.com/gabrielabragaoliveira/teste-de-ficha-de-personagens/main/fotos/Cassandra%20Kirimman.jpg" target="_blank" class="avatar-link" title="Ver imagem de Cassandra Kiramman">
-                <img class="avatar" src="https://raw.githubusercontent.com/gabrielabragaoliveira/teste-de-ficha-de-personagens/main/fotos/Cassandra%20Kirimman.jpg" alt="Foto de Cassandra Kiramman" loading="lazy">
-            </a>
-            <div class="info">
-                <p><strong>Nome:</strong> Cassandra Kiramman (Júnior)</p>
-                <p><strong>Local:</strong> Piltover</p>
-                <p><strong>Ocupação:</strong> Chefe dos negócios da família</p>
-            </div>
-            <p class="summary">Mãe de Caitlyn e atual controladora dos negócios e da imagem da família Kiramman. É rigorosa, preocupada com a mídia e exige que Caitlyn participe de eventos sociais e cuide dos sobrinhos.</p>
-        </div>
-    
-        <div class="card">
-            <a href="https://raw.githubusercontent.com/gabrielabragaoliveira/teste-de-ficha-de-personagens/main/fotos/Divania%20Juniper.png" target="_blank" class="avatar-link" title="Ver imagem de Divania Juniper">
-                <img class="avatar" src="https://raw.githubusercontent.com/gabrielabragaoliveira/teste-de-ficha-de-personagens/main/fotos/Divania%20Juniper.png" alt="Foto de Divania Juniper" loading="lazy">
-            </a>
-            <div class="info">
-                <p><strong>Nome:</strong> Divania Juniper (Diva de Zaun)</p>
-                <p><strong>Local:</strong> Água Mansa (Prisão)</p>
-                <p><strong>Ocupação:</strong> Cantora de rock / Detenta</p>
-            </div>
-            <p class="summary">Namorada de Vi e cantora de uma banda de rock. Foi presa em Água Mansa após um show clandestino terminar em vandalismo e usa uma prótese na perna. Vi aceitou os abusos de Margot na cadeia para mantê-la protegida.</p>
-        </div>
-    
-        <div class="card">
-            <a href="https://raw.githubusercontent.com/gabrielabragaoliveira/teste-de-ficha-de-personagens/main/fotos/Ekko.jpg" target="_blank" class="avatar-link" title="Ver imagem de Ekko">
-                <img class="avatar" src="https://raw.githubusercontent.com/gabrielabragaoliveira/teste-de-ficha-de-personagens/main/fotos/Ekko.jpg" alt="Foto de Ekko" loading="lazy">
-            </a>
-            <div class="info">
-                <p><strong>Nome:</strong> Ekko (Chefinho)</p>
-                <p><strong>Local:</strong> Zaun</p>
-                <p><strong>Ocupação:</strong> Amigo de Jinx e Vi</p>
-            </div>
-            <p class="summary">Amigo de longa data de Vi e Jinx. É namorado de Ezreal e se mostra o mais sensato, puritano e contido diante das brincadeiras pesadas de Jinx e Luxanna.</p>
-        </div>
-    
-        <div class="card">
-            <a href="https://ui-avatars.com/api/?name=Eleonor%20Kiramman&background=random&color=fff&size=150" target="_blank" class="avatar-link" title="Ver imagem de Eleonor Kiramman">
-                <img class="avatar" src="https://ui-avatars.com/api/?name=Eleonor%20Kiramman&background=random&color=fff&size=150" alt="Foto de Eleonor Kiramman" loading="lazy">
-            </a>
-            <div class="info">
-                <p><strong>Nome:</strong> Eleonor Kiramman</p>
-                <p><strong>Local:</strong> Piltover</p>
-                <p><strong>Ocupação:</strong> Criança</p>
-            </div>
-            <p class="summary">Prima pequena de Caitlyn, apelidada de "Chata Kiramman". É uma criança difícil e manipuladora que adora barganhar por doces e privilégios para obedecer.</p>
-        </div>
-    
-        <div class="card">
-            <a href="https://raw.githubusercontent.com/gabrielabragaoliveira/teste-de-ficha-de-personagens/main/fotos/Ezreal.jpg" target="_blank" class="avatar-link" title="Ver imagem de Ezreal">
-                <img class="avatar" src="https://raw.githubusercontent.com/gabrielabragaoliveira/teste-de-ficha-de-personagens/main/fotos/Ezreal.jpg" alt="Foto de Ezreal" loading="lazy">
-            </a>
-            <div class="info">
-                <p><strong>Nome:</strong> Ezreal</p>
-                <p><strong>Local:</strong> Piltover / Zaun</p>
-                <p><strong>Ocupação:</strong> Namorado de Ekko</p>
-            </div>
-            <p class="summary">Atual namorado de Ekko e ex-namorado de Luxanna. Continua amigo de Luxanna, o que confunde Jinx sobre a dinâmica deles.</p>
-        </div>
-    
-        <div class="card">
-            <a href="https://raw.githubusercontent.com/gabrielabragaoliveira/teste-de-ficha-de-personagens/main/fotos/Fel%C3%ADcia.png" target="_blank" class="avatar-link" title="Ver imagem de Felícia">
-                <img class="avatar" src="https://raw.githubusercontent.com/gabrielabragaoliveira/teste-de-ficha-de-personagens/main/fotos/Fel%C3%ADcia.png" alt="Foto de Felícia" loading="lazy">
-            </a>
-            <div class="info">
-                <p><strong>Nome:</strong> Felícia (Abuela)</p>
-                <p><strong>Local:</strong> Zaun</p>
-                <p><strong>Ocupação:</strong> Aposentada</p>
-            </div>
-            <p class="summary">Avó materna da Vi e Jinx, conhecida por sua doçura e vício em novelas mexicanas antigas. É o pilar amoroso da família, tendo acolhido Vi após o despejo sem julgamentos.</p>
-        </div>
-    
-        <div class="card">
-            <a href="https://raw.githubusercontent.com/gabrielabragaoliveira/teste-de-ficha-de-personagens/main/fotos/Isha.jpg" target="_blank" class="avatar-link" title="Ver imagem de Isha">
-                <img class="avatar" src="https://raw.githubusercontent.com/gabrielabragaoliveira/teste-de-ficha-de-personagens/main/fotos/Isha.jpg" alt="Foto de Isha" loading="lazy">
-            </a>
-            <div class="info">
-                <p><strong>Nome:</strong> Isha</p>
-                <p><strong>Local:</strong> Zaun</p>
-                <p><strong>Ocupação:</strong> Escoteira / Estudante</p>
-            </div>
-            <p class="summary">Menina de rua adotada por Jinx, tornando-se sobrinha-irmã de Vi. Tem cerca de oito anos, é muito inteligente e desenvolveu mutismo seletivo, comunicando-se fluentemente por linguagem de sinais.</p>
-        </div>
-    
-        <div class="card">
-            <a href="https://raw.githubusercontent.com/gabrielabragaoliveira/teste-de-ficha-de-personagens/main/fotos/Jinx.jpg" target="_blank" class="avatar-link" title="Ver imagem de Jinx">
-                <img class="avatar" src="https://raw.githubusercontent.com/gabrielabragaoliveira/teste-de-ficha-de-personagens/main/fotos/Jinx.jpg" alt="Foto de Jinx" loading="lazy">
-            </a>
-            <div class="info">
-                <p><strong>Nome:</strong> Jinx (Powder)</p>
-                <p><strong>Local:</strong> Zaun</p>
-                <p><strong>Ocupação:</strong> Trabalhadora de demolidora</p>
-            </div>
-            <p class="summary">Irmã caçula de Vi e mãe adotiva de Isha. Trabalha em uma demolidora, tem uma personalidade caótica, ciumenta e recentemente assumiu seus sentimentos intensos por Luxanna.</p>
-        </div>
-    
-        <div class="card">
-            <a href="https://ui-avatars.com/api/?name=Kevin&background=random&color=fff&size=150" target="_blank" class="avatar-link" title="Ver imagem de Kevin">
-                <img class="avatar" src="https://ui-avatars.com/api/?name=Kevin&background=random&color=fff&size=150" alt="Foto de Kevin" loading="lazy">
-            </a>
-            <div class="info">
-                <p><strong>Nome:</strong> Kevin</p>
-                <p><strong>Local:</strong> Zaun</p>
-                <p><strong>Ocupação:</strong> Estudante / Pré-adolescente</p>
-            </div>
-            <p class="summary">Pré-adolescente vizinho de Anitta que pegou carona para a festa em Piltover. Seu ceticismo sobre lobisomens irritou Vi, que lhe deu um choque de realidade sobre a prisão.</p>
-        </div>
-    
-        <div class="card">
-            <a href="https://raw.githubusercontent.com/gabrielabragaoliveira/teste-de-ficha-de-personagens/main/fotos/Loren%201.jpg" target="_blank" class="avatar-link" title="Ver imagem de Loren">
-                <img class="avatar" src="https://raw.githubusercontent.com/gabrielabragaoliveira/teste-de-ficha-de-personagens/main/fotos/Loren%201.jpg" alt="Foto de Loren" loading="lazy">
-            </a>
-            <div class="info">
-                <p><strong>Nome:</strong> Loren</p>
-                <p><strong>Local:</strong> Zaun</p>
-                <p><strong>Ocupação:</strong> Trabalhador</p>
-            </div>
-            <p class="summary">Amigo leal de Vi que alugou o sobrado nos fundos da casa da Abuela. Luta contra o alcoolismo e a depressão devido aos abandonos de sua esposa, Maria.</p>
-        </div>
-    
-        <div class="card">
-            <a href="https://raw.githubusercontent.com/gabrielabragaoliveira/teste-de-ficha-de-personagens/main/fotos/Luxanna.jpg" target="_blank" class="avatar-link" title="Ver imagem de Luxanna Stemmaguarda">
-                <img class="avatar" src="https://raw.githubusercontent.com/gabrielabragaoliveira/teste-de-ficha-de-personagens/main/fotos/Luxanna.jpg" alt="Foto de Luxanna Stemmaguarda" loading="lazy">
-            </a>
-            <div class="info">
-                <p><strong>Nome:</strong> Luxanna Stemmaguarda (Lux)</p>
-                <p><strong>Local:</strong> Demacia / Piltover</p>
-                <p><strong>Ocupação:</strong> Estudante universitária</p>
-            </div>
-            <p class="summary">Estudante de Demacia que mora em Piltover. É amiga de Jinx, nutre sentimentos profundos por ela e é surpreendentemente desinibida intimamente.</p>
-        </div>
-    
-        <div class="card">
-            <a href="https://raw.githubusercontent.com/gabrielabragaoliveira/teste-de-ficha-de-personagens/main/fotos/Maddie.jpg" target="_blank" class="avatar-link" title="Ver imagem de Maddie">
-                <img class="avatar" src="https://raw.githubusercontent.com/gabrielabragaoliveira/teste-de-ficha-de-personagens/main/fotos/Maddie.jpg" alt="Foto de Maddie" loading="lazy">
-            </a>
-            <div class="info">
-                <p><strong>Nome:</strong> Maddie</p>
-                <p><strong>Local:</strong> Piltover</p>
-                <p><strong>Ocupação:</strong> Assessora</p>
-            </div>
-            <p class="summary">Assessora de imprensa e parceira casual de Caitlyn. Tem um perfil submisso na cama, além de ser intensamente carente e emocionalmente dependente de Caitlyn.</p>
-        </div>
-    
-        <div class="card">
-            <a href="https://raw.githubusercontent.com/gabrielabragaoliveira/teste-de-ficha-de-personagens/main/fotos/Margot.jpg" target="_blank" class="avatar-link" title="Ver imagem de Margot">
-                <img class="avatar" src="https://raw.githubusercontent.com/gabrielabragaoliveira/teste-de-ficha-de-personagens/main/fotos/Margot.jpg" alt="Foto de Margot" loading="lazy">
-            </a>
-            <div class="info">
-                <p><strong>Nome:</strong> Margot (Madrinha E)</p>
-                <p><strong>Local:</strong> Água Mansa (Prisão)</p>
-                <p><strong>Ocupação:</strong> Baronesa Química / Dona da Vyx</p>
-            </div>
-            <p class="summary">Rica e poderosa Baronesa Química que comandava seus negócios de dentro da prisão. Obcecada por Vi, usou a fragilidade de Juniper para chantagear a protagonista.</p>
-        </div>
-    
-        <div class="card">
-            <a href="https://ui-avatars.com/api/?name=Maria&background=random&color=fff&size=150" target="_blank" class="avatar-link" title="Ver imagem de Maria">
-                <img class="avatar" src="https://ui-avatars.com/api/?name=Maria&background=random&color=fff&size=150" alt="Foto de Maria" loading="lazy">
-            </a>
-            <div class="info">
-                <p><strong>Nome:</strong> Maria</p>
-                <p><strong>Local:</strong> Zaun</p>
-                <p><strong>Ocupação:</strong> Desconhecida</p>
-            </div>
-            <p class="summary">Esposa instável de Loren. Costuma abandoná-lo frequentemente por outros homens, causando grande sofrimento a ele.</p>
-        </div>
-    
-        <div class="card">
-            <a href="https://raw.githubusercontent.com/gabrielabragaoliveira/teste-de-ficha-de-personagens/main/fotos/Sarah%20Fortune.jpg" target="_blank" class="avatar-link" title="Ver imagem de Sarah Fortune">
-                <img class="avatar" src="https://raw.githubusercontent.com/gabrielabragaoliveira/teste-de-ficha-de-personagens/main/fotos/Sarah%20Fortune.jpg" alt="Foto de Sarah Fortune" loading="lazy">
-            </a>
-            <div class="info">
-                <p><strong>Nome:</strong> Sarah Fortune</p>
-                <p><strong>Local:</strong> Piltover</p>
-                <p><strong>Ocupação:</strong> Caçadora de recompensas</p>
-            </div>
-            <p class="summary">Caçadora de recompensas de Piltover e amiga íntima com benefícios de Caitlyn. Serve como confidente sobre a misteriosa mulher de Zaun.</p>
-        </div>
-    
-        <div class="card">
-            <a href="https://ui-avatars.com/api/?name=Sebastian%20Kiramman&background=random&color=fff&size=150" target="_blank" class="avatar-link" title="Ver imagem de Sebastian Kiramman">
-                <img class="avatar" src="https://ui-avatars.com/api/?name=Sebastian%20Kiramman&background=random&color=fff&size=150" alt="Foto de Sebastian Kiramman" loading="lazy">
-            </a>
-            <div class="info">
-                <p><strong>Nome:</strong> Sebastian Kiramman</p>
-                <p><strong>Local:</strong> Piltover</p>
-                <p><strong>Ocupação:</strong> Criança</p>
-            </div>
-            <p class="summary">Primo de Caitlyn. Foi subornado com uma espingarda Nerf para brincar com Isha na festa e surpreendeu a todos ao se comunicar fluentemente em Libras com a menina.</p>
-        </div>
-    
-        <div class="card">
-            <a href="https://raw.githubusercontent.com/gabrielabragaoliveira/teste-de-ficha-de-personagens/main/fotos/Toddy.png" target="_blank" class="avatar-link" title="Ver imagem de Toddy">
-                <img class="avatar
+    <script>
+        // O link exato da sua planilha e da sua pasta de fotos no GitHub
+        const sheetId = '1u0l2XT5nEXKQc61cfGviOw4lD6RuMqn2iFjIZF2jCKk';
+        const gid = '1368915959';
+        const csvUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=${gid}`;
+        const urlBaseFotos = 'https://raw.githubusercontent.com/gabrielabragaoliveira/teste-de-ficha-de-personagens/main/fotos/';
+
+        // Lê a planilha do Google
+        Papa.parse(csvUrl, {
+            download: true,
+            header: true,
+            complete: function(results) {
+                // Esconde a mensagem de "carregando"
+                document.getElementById('loading').style.display = 'none';
+                
+                const container = document.getElementById('compass-container');
+                const data = results.data;
+
+                // Para cada linha da planilha, cria uma carta
+                data.forEach(row => {
+                    if (!row.Nome) return; // Pula linhas vazias
+
+                    const nome = row.Nome.trim();
+                    const apelido = row.Apelido ? row.Apelido.trim() : '';
+                    const local = row.Local ? row.Local.trim() : '';
+                    const ocupacao = row['Ocupação'] ? row['Ocupação'].trim() : '';
+                    const resumo = row.Resumo ? row.Resumo.trim() : '';
+
+                    const nomeExibicao = (apelido && apelido !== '-') ? `${nome} (${apelido})` : nome;
+
+                    // O Bot Inteligente de Fotos em JavaScript!
+                    // Ele tenta achar a foto como .jpg, se der erro tenta .png, e se não achar nenhuma, cria o avatar com as iniciais.
+                    const nomeParaUrl = encodeURIComponent(nome);
+                    const fotoJpg = `${urlBaseFotos}${nomeParaUrl}.jpg`;
+                    const fotoPng = `${urlBaseFotos}${nomeParaUrl}.png`;
+                    const avatarFallback = `https://ui-avatars.com/api/?name=${nomeParaUrl}&background=random&color=fff&size=150`;
+
+                    const cardHTML = `
+                        <div class="card">
+                            <a href="#" class="avatar-link">
+                                <img class="avatar" 
+                                     src="${fotoJpg}" 
+                                     onerror="this.onerror=null; this.src='${fotoPng}'; this.onerror=function(){this.src='${avatarFallback}';};" 
+                                     alt="Foto de ${nome}" loading="lazy">
+                            </a>
+                            <div class="info">
+                                <p><strong>Nome:</strong> ${nomeExibicao}</p>
+                                <p><strong>Local:</strong> ${local}</p>
+                                <p><strong>Ocupação:</strong> ${ocupacao}</p>
+                            </div>
+                            <p class="summary">${resumo}</p>
+                        </div>
+                    `;
+                    // Joga a carta na tela
+                    container.innerHTML += cardHTML;
+                });
+            },
+            error: function(error) {
+                document.getElementById('loading').innerHTML = '❌ Ocorreu um erro ao ler a planilha. Verificou se ela está Partilhada como "Qualquer pessoa com o link"?';
+            }
+        });
+    </script>
+</body>
+</html>
