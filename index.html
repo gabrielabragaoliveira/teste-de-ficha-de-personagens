@@ -24,63 +24,51 @@
     </style>
 </head>
 <body>
-    <h1>Creche da Vi<br>Ficha de personagens</h1>
+    <h1>Creche da Vi<br>Character Compass</h1>
     
     <div id="loading" class="loading">A ler os dados da planilha ao vivo... ⏳</div>
-    
     <div id="compass-container" class="compass-container"></div>
 
-
     <script>
-        
-        // 1. Configurações da sua planilha e do seu GitHub
         const sheetId = '1u0l2XT5nEXKQc61cfGviOw4lD6RuMqn2iFjIZF2jCKk';
         const gid = '1368915959';
-        const csvUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=${gid}`;
+        
+        // 🔥 A MÁGICA NOVA ESTÁ AQUI: O link VIP do Google que não bloqueia!
+        const csvUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&gid=${gid}`;
+        
         const urlBaseFotos = 'https://raw.githubusercontent.com/gabrielabragaoliveira/teste-de-ficha-de-personagens/main/fotos/';
 
-        // 2. O comando que vai lá no Google Sheets ler tudo
         Papa.parse(csvUrl, {
             download: true,
             header: true,
             complete: function(results) {
-                // Tira o aviso de carregamento da tela
                 document.getElementById('loading').style.display = 'none';
-                
                 const container = document.getElementById('compass-container');
                 const data = results.data;
 
-                // 3. O "Laço de Repetição" que cria uma carta para cada linha da planilha
                 data.forEach(row => {
-                    if (!row.Nome) return; // Se a linha não tiver nome, ele pula
+                    if (!row.Nome) return;
 
-                    // Pegando os textos da planilha
                     const nome = row.Nome.trim();
                     const apelido = row.Apelido ? row.Apelido.trim() : '';
                     const local = row.Local ? row.Local.trim() : '';
                     const ocupacao = row['Ocupação'] ? row['Ocupação'].trim() : '';
                     const resumo = row.Resumo ? row.Resumo.trim() : '';
-                    const arquivoFoto = row.Foto ? row.Foto.trim() : ''; // A coluna Foto que você vai criar!
+                    const arquivoFoto = row.Foto ? row.Foto.trim() : ''; // Sua nova coluna Foto!
 
-                    // Junta o nome com o apelido (se existir)
                     const nomeExibicao = (apelido && apelido !== '-') ? `${nome} (${apelido})` : nome;
 
-                    // Lógica para montar o link da imagem
                     let linkFotoFinal = '';
                     const nomeParaUrl = encodeURIComponent(nome);
                     
                     if (arquivoFoto !== '') {
-                        // Usa o nome exato que você digitou na coluna Foto
                         linkFotoFinal = `${urlBaseFotos}${encodeURIComponent(arquivoFoto)}`;
                     } else {
-                        // Chute automático se a coluna Foto estiver vazia
                         linkFotoFinal = `${urlBaseFotos}${nomeParaUrl}.jpg`;
                     }
 
-                    // Avatar genérico se a foto falhar
                     const avatarFallback = `https://ui-avatars.com/api/?name=${nomeParaUrl}&background=random&color=fff&size=150`;
 
-                    // 4. Montando o HTML de cada cartinha
                     const cardHTML = `
                         <div class="card">
                             <a href="${linkFotoFinal}" target="_blank" class="avatar-link">
@@ -97,14 +85,11 @@
                             <p class="summary">${resumo}</p>
                         </div>
                     `;
-                    
-                    // Joga a carta pronta para dentro da tela
                     container.innerHTML += cardHTML;
                 });
             },
             error: function(error) {
-                // Mensagem de erro caso a planilha esteja privada
-                document.getElementById('loading').innerHTML = '❌ Erro ao ler a planilha. Garanta que o link está Público (Qualquer pessoa com o link).';
+                document.getElementById('loading').innerHTML = '❌ O Google bloqueou a leitura! Tente "Publicar na Web" nas configurações da planilha.';
             }
         });
     </script>
