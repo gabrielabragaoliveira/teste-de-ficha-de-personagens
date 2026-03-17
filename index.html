@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Creche da Vi - Ficha de Personagens</title>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f6f8; color: #333; margin: 0; padding: 20px; }
         h1 { text-align: center; font-size: 2.5rem; margin-bottom: 30px; color: #1a1a1a; }
@@ -28,49 +30,63 @@
     
     <div id="compass-container" class="compass-container"></div>
 
+
     <script>
-        // O link exato da sua planilha e da sua pasta de fotos no GitHub
+        
+        // 1. Configurações da sua planilha e do seu GitHub
         const sheetId = '1u0l2XT5nEXKQc61cfGviOw4lD6RuMqn2iFjIZF2jCKk';
         const gid = '1368915959';
         const csvUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=${gid}`;
         const urlBaseFotos = 'https://raw.githubusercontent.com/gabrielabragaoliveira/teste-de-ficha-de-personagens/main/fotos/';
 
-        // Lê a planilha do Google
+        // 2. O comando que vai lá no Google Sheets ler tudo
         Papa.parse(csvUrl, {
             download: true,
             header: true,
             complete: function(results) {
-                // Esconde a mensagem de "carregando"
+                // Tira o aviso de carregamento da tela
                 document.getElementById('loading').style.display = 'none';
                 
                 const container = document.getElementById('compass-container');
                 const data = results.data;
 
-                // Para cada linha da planilha, cria uma carta
+                // 3. O "Laço de Repetição" que cria uma carta para cada linha da planilha
                 data.forEach(row => {
-                    if (!row.Nome) return; // Pula linhas vazias
+                    if (!row.Nome) return; // Se a linha não tiver nome, ele pula
 
+                    // Pegando os textos da planilha
                     const nome = row.Nome.trim();
                     const apelido = row.Apelido ? row.Apelido.trim() : '';
                     const local = row.Local ? row.Local.trim() : '';
                     const ocupacao = row['Ocupação'] ? row['Ocupação'].trim() : '';
                     const resumo = row.Resumo ? row.Resumo.trim() : '';
+                    const arquivoFoto = row.Foto ? row.Foto.trim() : ''; // A coluna Foto que você vai criar!
 
+                    // Junta o nome com o apelido (se existir)
                     const nomeExibicao = (apelido && apelido !== '-') ? `${nome} (${apelido})` : nome;
 
-                    // O Bot Inteligente de Fotos em JavaScript!
-                    // Ele tenta achar a foto como .jpg, se der erro tenta .png, e se não achar nenhuma, cria o avatar com as iniciais.
+                    // Lógica para montar o link da imagem
+                    let linkFotoFinal = '';
                     const nomeParaUrl = encodeURIComponent(nome);
-                    const fotoJpg = `${urlBaseFotos}${nomeParaUrl}.jpg`;
-                    const fotoPng = `${urlBaseFotos}${nomeParaUrl}.png`;
+                    
+                    if (arquivoFoto !== '') {
+                        // Usa o nome exato que você digitou na coluna Foto
+                        linkFotoFinal = `${urlBaseFotos}${encodeURIComponent(arquivoFoto)}`;
+                    } else {
+                        // Chute automático se a coluna Foto estiver vazia
+                        linkFotoFinal = `${urlBaseFotos}${nomeParaUrl}.jpg`;
+                    }
+
+                    // Avatar genérico se a foto falhar
                     const avatarFallback = `https://ui-avatars.com/api/?name=${nomeParaUrl}&background=random&color=fff&size=150`;
 
+                    // 4. Montando o HTML de cada cartinha
                     const cardHTML = `
                         <div class="card">
-                            <a href="#" class="avatar-link">
+                            <a href="${linkFotoFinal}" target="_blank" class="avatar-link">
                                 <img class="avatar" 
-                                     src="${fotoJpg}" 
-                                     onerror="this.onerror=null; this.src='${fotoPng}'; this.onerror=function(){this.src='${avatarFallback}';};" 
+                                     src="${linkFotoFinal}" 
+                                     onerror="this.onerror=null; this.src='${avatarFallback}';" 
                                      alt="Foto de ${nome}" loading="lazy">
                             </a>
                             <div class="info">
@@ -81,14 +97,16 @@
                             <p class="summary">${resumo}</p>
                         </div>
                     `;
-                    // Joga a carta na tela
+                    
+                    // Joga a carta pronta para dentro da tela
                     container.innerHTML += cardHTML;
                 });
             },
             error: function(error) {
-                document.getElementById('loading').innerHTML = '❌ Ocorreu um erro ao ler a planilha. Verificou se ela está Partilhada como "Qualquer pessoa com o link"?';
+                // Mensagem de erro caso a planilha esteja privada
+                document.getElementById('loading').innerHTML = '❌ Erro ao ler a planilha. Garanta que o link está Público (Qualquer pessoa com o link).';
             }
         });
     </script>
-</body>
+    </body>
 </html>
