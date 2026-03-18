@@ -27,57 +27,56 @@
     <h1>Creche da Vi<br>Character Compass</h1>
     
     <div id="loading" class="loading">A ler os dados da planilha ao vivo... ⏳</div>
-    
     <div id="compass-container" class="compass-container"></div>
 
     <script>
-        
-        // 1. O link definitivo e público da sua planilha! 
         const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTXNjZ0XidEUQHJmV-0TJEN8W6KFIsl6g98SZRUx2UWvCM1gelUB_SkVeaO-2UHOU8WRQfd6GB63LI8/pub?output=csv';
         const urlBaseFotos = 'https://raw.githubusercontent.com/gabrielabragaoliveira/teste-de-ficha-de-personagens/main/fotos/';
 
-        // 2. O comando que vai lá no Google Sheets ler tudo
         Papa.parse(csvUrl, {
             download: true,
             header: true,
+            // Esse truque remove espaços acidentais nos títulos das colunas
+            transformHeader: function(header) {
+                return header.trim();
+            },
             complete: function(results) {
-                // Tira o aviso de carregamento da tela
                 document.getElementById('loading').style.display = 'none';
-                
                 const container = document.getElementById('compass-container');
                 const data = results.data;
 
-                // 3. O "Laço de Repetição" que cria uma carta para cada linha da planilha
                 data.forEach(row => {
-                    if (!row.Nome) return; // Se a linha não tiver nome, ele pula
+                    if (!row['Nome']) return; 
 
-                    // Pegando os textos da planilha
-                    const nome = row.Nome.trim();
-                    const apelido = row.Apelido ? row.Apelido.trim() : '';
-                    const local = row.Local ? row.Local.trim() : '';
+                    // Agora o código lê os títulos EXATOS da sua nova tabela
+                    const nome = row['Nome'] ? row['Nome'].trim() : '';
+                    const apelido = row['Apelido'] ? row['Apelido'].trim() : '';
+                    const local = row['Local'] ? row['Local'].trim() : '';
                     const ocupacao = row['Ocupação'] ? row['Ocupação'].trim() : '';
-                    const resumo = row.Resumo ? row.Resumo.trim() : '';
-                    const arquivoFoto = row.Foto ? row.Foto.trim() : ''; // A coluna Foto!
+                    const resumo = row['Resumo'] ? row['Resumo'].trim() : '';
+                    const arquivoFoto = row['Arquivo/URL da Foto'] ? row['Arquivo/URL da Foto'].trim() : '';
 
-                    // Junta o nome com o apelido (se existir e não for um traço)
+                    // Formata o nome para exibir o apelido
                     const nomeExibicao = (apelido && apelido !== '-') ? `${nome} (${apelido})` : nome;
 
-                    // Lógica para montar o link da imagem
                     let linkFotoFinal = '';
                     const nomeParaUrl = encodeURIComponent(nome);
                     
                     if (arquivoFoto !== '') {
-                        // Usa o nome exato que você digitou na coluna Foto (ex: Anitta.png)
-                        linkFotoFinal = `${urlBaseFotos}${encodeURIComponent(arquivoFoto)}`;
+                        // Verifica se você colou um link da internet (começa com http) ou só o nome do arquivo
+                        if (arquivoFoto.toLowerCase().startsWith('http')) {
+                            linkFotoFinal = arquivoFoto;
+                        } else {
+                            linkFotoFinal = `${urlBaseFotos}${encodeURIComponent(arquivoFoto)}`;
+                        }
                     } else {
-                        // Chute automático se a coluna Foto estiver vazia
+                        // Chute automático se a coluna estiver vazia
                         linkFotoFinal = `${urlBaseFotos}${nomeParaUrl}.jpg`;
                     }
 
-                    // Avatar genérico se a foto falhar
+                    // Avatar genérico se nada der certo
                     const avatarFallback = `https://ui-avatars.com/api/?name=${nomeParaUrl}&background=random&color=fff&size=150`;
 
-                    // 4. Montando o HTML de cada cartinha
                     const cardHTML = `
                         <div class="card">
                             <a href="${linkFotoFinal}" target="_blank" class="avatar-link">
@@ -95,15 +94,13 @@
                         </div>
                     `;
                     
-                    // Joga a carta pronta para dentro da tela
                     container.innerHTML += cardHTML;
                 });
             },
             error: function(error) {
-                // Mensagem de erro 
                 document.getElementById('loading').innerHTML = '❌ Erro ao ler a planilha. Tente atualizar a página.';
             }
         });
     </script>
-    </body>
+</body>
 </html>
