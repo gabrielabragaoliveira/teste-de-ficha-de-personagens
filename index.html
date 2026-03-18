@@ -17,37 +17,37 @@
         .avatar-link:hover { opacity: 0.8; }
         .avatar { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; background-color: #e9ecef; border: 4px solid #f0f0f0; display: block; }
         
-        /* Alinhamento à esquerda para a ficha */
+        /* Ficha com textos alinhados à esquerda */
         .info { width: 100%; text-align: left; margin-bottom: 15px; padding-left: 10px; }
         .info p { margin: 8px 0; font-size: 1.1rem; }
         .info strong { color: #000; }
         
-        /* Resumo justificado */
+        /* Resumo na parte de baixo justificado */
         .summary { width: 100%; font-size: 0.95rem; color: #555; text-align: justify; line-height: 1.5; border-top: 1px solid #eee; padding-top: 15px; margin-top: auto; }
         
         .loading { text-align: center; font-size: 1.2rem; color: #666; margin-top: 50px; font-weight: bold; }
     </style>
 
     <script>
+        // O Super Radar agora é ainda mais agressivo na procura de imagens
         function tentarProximaImagem(imgElement) {
             let urls = imgElement.getAttribute('data-urls').split(',');
             let indexAtual = parseInt(imgElement.getAttribute('data-index') || '0');
             indexAtual++;
             
-            // Se ainda houver URLs na lista para testar, ele troca a imagem
             if (indexAtual < urls.length) {
                 imgElement.setAttribute('data-index', indexAtual);
                 imgElement.src = urls[indexAtual];
-                // Atualiza também o link para quando você clicar na foto, abrir a certa!
                 imgElement.parentElement.href = urls[indexAtual];
             } else {
-                imgElement.onerror = null; // Desiste e deixa a imagem das letras
+                imgElement.onerror = null; 
             }
         }
     </script>
 </head>
 <body>
-    <h1>Creche da Vi<br>Character Compass</h1>
+    
+    <h1>Creche da Vi<br>Ficha de Personagens</h1>
     
     <div id="loading" class="loading">A ler os dados da planilha ao vivo... ⏳</div>
     <div id="compass-container" class="compass-container"></div>
@@ -58,13 +58,12 @@
 
         Papa.parse(csvUrl, {
             download: true,
-            header: false, // Lendo pela posição da coluna!
+            header: false, // Lê pela exata posição das colunas da planilha
             complete: function(results) {
                 document.getElementById('loading').style.display = 'none';
                 const container = document.getElementById('compass-container');
                 const data = results.data;
 
-                // Loop a partir da linha 1 (ignora o cabeçalho)
                 for (let i = 1; i < data.length; i++) {
                     const row = data[i];
 
@@ -77,39 +76,43 @@
                     const resumo = row[4] ? row[4].trim() : '';
                     const arquivoFoto = row[5] ? row[5].trim() : '';
 
-                    // 1. Limpador de Traços para o Apelido
-                    // Remove traços e espaços. Se ficar vazio, é porque era só um traço.
+                    // Apelido entre o Nome e o Local (ignora traços vazios)
                     const apelidoLimpo = apelido.replace(/[-\s—–]/g, '');
                     let linhaApelidoHTML = '';
                     if (apelidoLimpo !== '') {
                         linhaApelidoHTML = `<p><strong>Apelido:</strong> ${apelido}</p>`;
                     }
 
-                    // 2. Gerador de Links do Super Radar
+                    // A MÁQUINA DE BUSCA DE FOTOS (Gera múltiplas opções de link)
                     let listaDeLinks = [];
                     const nomeUrl = encodeURIComponent(nome);
                     const nomeMinusc = encodeURIComponent(nome.toLowerCase());
+                    const nomeSemEspacos = encodeURIComponent(nome.replace(/\s+/g, ''));
+                    const nomeMinuscSemEspacos = encodeURIComponent(nome.toLowerCase().replace(/\s+/g, ''));
 
+                    // 1ª Tentativa: O que você escreveu na 6ª coluna da planilha (O Truque de Mestre)
                     if (arquivoFoto !== '') {
                         if (arquivoFoto.toLowerCase().startsWith('http')) {
-                            listaDeLinks.push(arquivoFoto); // Link direto
+                            listaDeLinks.push(arquivoFoto);
                         } else {
-                            const arqUrl = encodeURIComponent(arquivoFoto);
-                            const arqMinusc = encodeURIComponent(arquivoFoto.toLowerCase());
-                            listaDeLinks.push(`${urlBaseFotos}${arqUrl}`);
-                            listaDeLinks.push(`${urlBaseFotos}${arqMinusc}`);
+                            listaDeLinks.push(`${urlBaseFotos}${encodeURIComponent(arquivoFoto)}`);
+                            listaDeLinks.push(`${urlBaseFotos}${encodeURIComponent(arquivoFoto.toLowerCase())}`);
                         }
-                    } else {
-                        // Se não escreveu nada, tenta adivinhar todas as combinações!
-                        listaDeLinks.push(`${urlBaseFotos}${nomeUrl}.png`);
-                        listaDeLinks.push(`${urlBaseFotos}${nomeUrl}.jpg`);
-                        listaDeLinks.push(`${urlBaseFotos}${nomeMinusc}.png`);
-                        listaDeLinks.push(`${urlBaseFotos}${nomeMinusc}.jpg`);
-                        listaDeLinks.push(`${urlBaseFotos}${nomeUrl}.jpeg`);
                     }
+
+                    // 2ª Tentativa: Chuta todos os formatos possíveis usando o Nome da Personagem
+                    listaDeLinks.push(`${urlBaseFotos}${nomeUrl}.png`);
+                    listaDeLinks.push(`${urlBaseFotos}${nomeUrl}.jpg`);
+                    listaDeLinks.push(`${urlBaseFotos}${nomeMinusc}.png`);
+                    listaDeLinks.push(`${urlBaseFotos}${nomeMinusc}.jpg`);
+                    listaDeLinks.push(`${urlBaseFotos}${nomeSemEspacos}.png`); // Ex: CaitlynKiramman.png
+                    listaDeLinks.push(`${urlBaseFotos}${nomeMinuscSemEspacos}.png`); // Ex: caitlynkiramman.png
                     
-                    // O último link da lista é sempre o avatar de letras colorido
+                    // 3ª Tentativa: O Avatar com as letras se tudo falhar
                     listaDeLinks.push(`https://ui-avatars.com/api/?name=${nomeUrl}&background=random&color=fff&size=150`);
+
+                    // Limpa links repetidos
+                    listaDeLinks = [...new Set(listaDeLinks)];
 
                     const stringDeLinks = listaDeLinks.join(',');
                     const primeiroLink = listaDeLinks[0];
