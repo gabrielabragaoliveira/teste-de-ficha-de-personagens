@@ -16,12 +16,35 @@
         .avatar-link { display: block; margin-bottom: 20px; transition: opacity 0.2s; }
         .avatar-link:hover { opacity: 0.8; }
         .avatar { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; background-color: #e9ecef; border: 4px solid #f0f0f0; display: block; }
-        .info { width: 100%; text-align: center; margin-bottom: 15px; }
+        
+        /* Alinhamento à esquerda para a ficha */
+        .info { width: 100%; text-align: left; margin-bottom: 15px; padding-left: 10px; }
         .info p { margin: 8px 0; font-size: 1.1rem; }
         .info strong { color: #000; }
+        
+        /* Resumo justificado */
         .summary { width: 100%; font-size: 0.95rem; color: #555; text-align: justify; line-height: 1.5; border-top: 1px solid #eee; padding-top: 15px; margin-top: auto; }
+        
         .loading { text-align: center; font-size: 1.2rem; color: #666; margin-top: 50px; font-weight: bold; }
     </style>
+
+    <script>
+        function tentarProximaImagem(imgElement) {
+            let urls = imgElement.getAttribute('data-urls').split(',');
+            let indexAtual = parseInt(imgElement.getAttribute('data-index') || '0');
+            indexAtual++;
+            
+            // Se ainda houver URLs na lista para testar, ele troca a imagem
+            if (indexAtual < urls.length) {
+                imgElement.setAttribute('data-index', indexAtual);
+                imgElement.src = urls[indexAtual];
+                // Atualiza também o link para quando você clicar na foto, abrir a certa!
+                imgElement.parentElement.href = urls[indexAtual];
+            } else {
+                imgElement.onerror = null; // Desiste e deixa a imagem das letras
+            }
+        }
+    </script>
 </head>
 <body>
     <h1>Creche da Vi<br>Character Compass</h1>
@@ -35,58 +58,75 @@
 
         Papa.parse(csvUrl, {
             download: true,
-            header: true,
-            // Esse truque remove espaços acidentais nos títulos das colunas
-            transformHeader: function(header) {
-                return header.trim();
-            },
+            header: false, // Lendo pela posição da coluna!
             complete: function(results) {
                 document.getElementById('loading').style.display = 'none';
                 const container = document.getElementById('compass-container');
                 const data = results.data;
 
-                data.forEach(row => {
-                    if (!row['Nome']) return; 
+                // Loop a partir da linha 1 (ignora o cabeçalho)
+                for (let i = 1; i < data.length; i++) {
+                    const row = data[i];
 
-                    // Agora o código lê os títulos EXATOS da sua nova tabela
-                    const nome = row['Nome'] ? row['Nome'].trim() : '';
-                    const apelido = row['Apelido'] ? row['Apelido'].trim() : '';
-                    const local = row['Local'] ? row['Local'].trim() : '';
-                    const ocupacao = row['Ocupação'] ? row['Ocupação'].trim() : '';
-                    const resumo = row['Resumo'] ? row['Resumo'].trim() : '';
-                    const arquivoFoto = row['Arquivo/URL da Foto'] ? row['Arquivo/URL da Foto'].trim() : '';
+                    if (!row[0] || row[0].trim() === '') continue;
 
-                    // Formata o nome para exibir o apelido
-                    const nomeExibicao = (apelido && apelido !== '-') ? `${nome} (${apelido})` : nome;
+                    const nome = row[0] ? row[0].trim() : '';
+                    const apelido = row[1] ? row[1].trim() : '';
+                    const local = row[2] ? row[2].trim() : '';
+                    const ocupacao = row[3] ? row[3].trim() : '';
+                    const resumo = row[4] ? row[4].trim() : '';
+                    const arquivoFoto = row[5] ? row[5].trim() : '';
 
-                    let linkFotoFinal = '';
-                    const nomeParaUrl = encodeURIComponent(nome);
-                    
-                    if (arquivoFoto !== '') {
-                        // Verifica se você colou um link da internet (começa com http) ou só o nome do arquivo
-                        if (arquivoFoto.toLowerCase().startsWith('http')) {
-                            linkFotoFinal = arquivoFoto;
-                        } else {
-                            linkFotoFinal = `${urlBaseFotos}${encodeURIComponent(arquivoFoto)}`;
-                        }
-                    } else {
-                        // Chute automático se a coluna estiver vazia
-                        linkFotoFinal = `${urlBaseFotos}${nomeParaUrl}.jpg`;
+                    // 1. Limpador de Traços para o Apelido
+                    // Remove traços e espaços. Se ficar vazio, é porque era só um traço.
+                    const apelidoLimpo = apelido.replace(/[-\s—–]/g, '');
+                    let linhaApelidoHTML = '';
+                    if (apelidoLimpo !== '') {
+                        linhaApelidoHTML = `<p><strong>Apelido:</strong> ${apelido}</p>`;
                     }
 
-                    // Avatar genérico se nada der certo
-                    const avatarFallback = `https://ui-avatars.com/api/?name=${nomeParaUrl}&background=random&color=fff&size=150`;
+                    // 2. Gerador de Links do Super Radar
+                    let listaDeLinks = [];
+                    const nomeUrl = encodeURIComponent(nome);
+                    const nomeMinusc = encodeURIComponent(nome.toLowerCase());
+
+                    if (arquivoFoto !== '') {
+                        if (arquivoFoto.toLowerCase().startsWith('http')) {
+                            listaDeLinks.push(arquivoFoto); // Link direto
+                        } else {
+                            const arqUrl = encodeURIComponent(arquivoFoto);
+                            const arqMinusc = encodeURIComponent(arquivoFoto.toLowerCase());
+                            listaDeLinks.push(`${urlBaseFotos}${arqUrl}`);
+                            listaDeLinks.push(`${urlBaseFotos}${arqMinusc}`);
+                        }
+                    } else {
+                        // Se não escreveu nada, tenta adivinhar todas as combinações!
+                        listaDeLinks.push(`${urlBaseFotos}${nomeUrl}.png`);
+                        listaDeLinks.push(`${urlBaseFotos}${nomeUrl}.jpg`);
+                        listaDeLinks.push(`${urlBaseFotos}${nomeMinusc}.png`);
+                        listaDeLinks.push(`${urlBaseFotos}${nomeMinusc}.jpg`);
+                        listaDeLinks.push(`${urlBaseFotos}${nomeUrl}.jpeg`);
+                    }
+                    
+                    // O último link da lista é sempre o avatar de letras colorido
+                    listaDeLinks.push(`https://ui-avatars.com/api/?name=${nomeUrl}&background=random&color=fff&size=150`);
+
+                    const stringDeLinks = listaDeLinks.join(',');
+                    const primeiroLink = listaDeLinks[0];
 
                     const cardHTML = `
                         <div class="card">
-                            <a href="${linkFotoFinal}" target="_blank" class="avatar-link">
+                            <a href="${primeiroLink}" target="_blank" class="avatar-link">
                                 <img class="avatar" 
-                                     src="${linkFotoFinal}" 
-                                     onerror="this.onerror=null; this.src='${avatarFallback}';" 
+                                     src="${primeiroLink}" 
+                                     data-urls="${stringDeLinks}"
+                                     data-index="0"
+                                     onerror="tentarProximaImagem(this)" 
                                      alt="Foto de ${nome}" loading="lazy">
                             </a>
                             <div class="info">
-                                <p><strong>Nome:</strong> ${nomeExibicao}</p>
+                                <p><strong>Nome:</strong> ${nome}</p>
+                                ${linhaApelidoHTML}
                                 <p><strong>Local:</strong> ${local}</p>
                                 <p><strong>Ocupação:</strong> ${ocupacao}</p>
                             </div>
@@ -95,7 +135,7 @@
                     `;
                     
                     container.innerHTML += cardHTML;
-                });
+                }
             },
             error: function(error) {
                 document.getElementById('loading').innerHTML = '❌ Erro ao ler a planilha. Tente atualizar a página.';
