@@ -17,19 +17,19 @@
         .avatar-link:hover { opacity: 0.8; }
         .avatar { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; background-color: #e9ecef; border: 4px solid #f0f0f0; display: block; }
         
-        /* Ficha com textos alinhados à esquerda */
         .info { width: 100%; text-align: left; margin-bottom: 15px; padding-left: 10px; }
         .info p { margin: 8px 0; font-size: 1.1rem; }
         .info strong { color: #000; }
         
-        /* Resumo na parte de baixo justificado */
         .summary { width: 100%; font-size: 0.95rem; color: #555; text-align: justify; line-height: 1.5; border-top: 1px solid #eee; padding-top: 15px; margin-top: auto; }
         
         .loading { text-align: center; font-size: 1.2rem; color: #666; margin-top: 50px; font-weight: bold; }
+        
+        /* Um avisinho discreto lá no fundo para mostrar que está a atualizar sozinho */
+        .live-status { text-align: center; font-size: 0.8rem; color: #999; margin-top: 30px; }
     </style>
 
     <script>
-        // O Super Radar agora é ainda mais agressivo na procura de imagens
         function tentarProximaImagem(imgElement) {
             let urls = imgElement.getAttribute('data-urls').split(',');
             let indexAtual = parseInt(imgElement.getAttribute('data-index') || '0');
@@ -51,99 +51,110 @@
     
     <div id="loading" class="loading">A ler os dados da planilha ao vivo... ⏳</div>
     <div id="compass-container" class="compass-container"></div>
+    <div class="live-status">🟢 Ligado à planilha (Atualiza automaticamente)</div>
 
     <script>
-        const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTXNjZ0XidEUQHJmV-0TJEN8W6KFIsl6g98SZRUx2UWvCM1gelUB_SkVeaO-2UHOU8WRQfd6GB63LI8/pub?output=csv';
+        const csvUrlBase = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTXNjZ0XidEUQHJmV-0TJEN8W6KFIsl6g98SZRUx2UWvCM1gelUB_SkVeaO-2UHOU8WRQfd6GB63LI8/pub?output=csv';
         const urlBaseFotos = 'https://raw.githubusercontent.com/gabrielabragaoliveira/teste-de-ficha-de-personagens/main/fotos/';
 
-        Papa.parse(csvUrl, {
-            download: true,
-            header: false, // Lê pela exata posição das colunas da planilha
-            complete: function(results) {
-                document.getElementById('loading').style.display = 'none';
-                const container = document.getElementById('compass-container');
-                const data = results.data;
+        // Transformámos a leitura numa "Função" para podermos chamá-la de tempos a tempos
+        function carregarPersonagens() {
+            // O Truque do Cache-Buster: adiciona a hora exata ao final do link para forçar o Google a dar os dados novos
+            const urlAoVivo = csvUrlBase + '&t=' + new Date().getTime();
 
-                for (let i = 1; i < data.length; i++) {
-                    const row = data[i];
+            Papa.parse(urlAoVivo, {
+                download: true,
+                header: false, 
+                complete: function(results) {
+                    document.getElementById('loading').style.display = 'none';
+                    const container = document.getElementById('compass-container');
+                    
+                    // Limpa as cartas antigas antes de desenhar as novas
+                    container.innerHTML = ''; 
+                    
+                    const data = results.data;
 
-                    if (!row[0] || row[0].trim() === '') continue;
+                    for (let i = 1; i < data.length; i++) {
+                        const row = data[i];
 
-                    const nome = row[0] ? row[0].trim() : '';
-                    const apelido = row[1] ? row[1].trim() : '';
-                    const local = row[2] ? row[2].trim() : '';
-                    const ocupacao = row[3] ? row[3].trim() : '';
-                    const resumo = row[4] ? row[4].trim() : '';
-                    const arquivoFoto = row[5] ? row[5].trim() : '';
+                        if (!row[0] || row[0].trim() === '') continue;
 
-                    // Apelido entre o Nome e o Local (ignora traços vazios)
-                    const apelidoLimpo = apelido.replace(/[-\s—–]/g, '');
-                    let linhaApelidoHTML = '';
-                    if (apelidoLimpo !== '') {
-                        linhaApelidoHTML = `<p><strong>Apelido:</strong> ${apelido}</p>`;
-                    }
+                        const nome = row[0] ? row[0].trim() : '';
+                        const apelido = row[1] ? row[1].trim() : '';
+                        const local = row[2] ? row[2].trim() : '';
+                        const ocupacao = row[3] ? row[3].trim() : '';
+                        const resumo = row[4] ? row[4].trim() : '';
+                        const arquivoFoto = row[5] ? row[5].trim() : '';
 
-                    // A MÁQUINA DE BUSCA DE FOTOS (Gera múltiplas opções de link)
-                    let listaDeLinks = [];
-                    const nomeUrl = encodeURIComponent(nome);
-                    const nomeMinusc = encodeURIComponent(nome.toLowerCase());
-                    const nomeSemEspacos = encodeURIComponent(nome.replace(/\s+/g, ''));
-                    const nomeMinuscSemEspacos = encodeURIComponent(nome.toLowerCase().replace(/\s+/g, ''));
-
-                    // 1ª Tentativa: O que você escreveu na 6ª coluna da planilha (O Truque de Mestre)
-                    if (arquivoFoto !== '') {
-                        if (arquivoFoto.toLowerCase().startsWith('http')) {
-                            listaDeLinks.push(arquivoFoto);
-                        } else {
-                            listaDeLinks.push(`${urlBaseFotos}${encodeURIComponent(arquivoFoto)}`);
-                            listaDeLinks.push(`${urlBaseFotos}${encodeURIComponent(arquivoFoto.toLowerCase())}`);
+                        const apelidoLimpo = apelido.replace(/[-\s—–]/g, '');
+                        let linhaApelidoHTML = '';
+                        if (apelidoLimpo !== '') {
+                            linhaApelidoHTML = `<p><strong>Apelido:</strong> ${apelido}</p>`;
                         }
-                    }
 
-                    // 2ª Tentativa: Chuta todos os formatos possíveis usando o Nome da Personagem
-                    listaDeLinks.push(`${urlBaseFotos}${nomeUrl}.png`);
-                    listaDeLinks.push(`${urlBaseFotos}${nomeUrl}.jpg`);
-                    listaDeLinks.push(`${urlBaseFotos}${nomeMinusc}.png`);
-                    listaDeLinks.push(`${urlBaseFotos}${nomeMinusc}.jpg`);
-                    listaDeLinks.push(`${urlBaseFotos}${nomeSemEspacos}.png`); // Ex: CaitlynKiramman.png
-                    listaDeLinks.push(`${urlBaseFotos}${nomeMinuscSemEspacos}.png`); // Ex: caitlynkiramman.png
-                    
-                    // 3ª Tentativa: O Avatar com as letras se tudo falhar
-                    listaDeLinks.push(`https://ui-avatars.com/api/?name=${nomeUrl}&background=random&color=fff&size=150`);
+                        let listaDeLinks = [];
+                        const nomeUrl = encodeURIComponent(nome);
+                        const nomeMinusc = encodeURIComponent(nome.toLowerCase());
+                        const nomeSemEspacos = encodeURIComponent(nome.replace(/\s+/g, ''));
+                        const nomeMinuscSemEspacos = encodeURIComponent(nome.toLowerCase().replace(/\s+/g, ''));
 
-                    // Limpa links repetidos
-                    listaDeLinks = [...new Set(listaDeLinks)];
+                        if (arquivoFoto !== '') {
+                            if (arquivoFoto.toLowerCase().startsWith('http')) {
+                                listaDeLinks.push(arquivoFoto);
+                            } else {
+                                listaDeLinks.push(`${urlBaseFotos}${encodeURIComponent(arquivoFoto)}`);
+                                listaDeLinks.push(`${urlBaseFotos}${encodeURIComponent(arquivoFoto.toLowerCase())}`);
+                            }
+                        }
 
-                    const stringDeLinks = listaDeLinks.join(',');
-                    const primeiroLink = listaDeLinks[0];
+                        listaDeLinks.push(`${urlBaseFotos}${nomeUrl}.png`);
+                        listaDeLinks.push(`${urlBaseFotos}${nomeUrl}.jpg`);
+                        listaDeLinks.push(`${urlBaseFotos}${nomeMinusc}.png`);
+                        listaDeLinks.push(`${urlBaseFotos}${nomeMinusc}.jpg`);
+                        listaDeLinks.push(`${urlBaseFotos}${nomeSemEspacos}.png`);
+                        listaDeLinks.push(`${urlBaseFotos}${nomeMinuscSemEspacos}.png`);
+                        
+                        listaDeLinks.push(`https://ui-avatars.com/api/?name=${nomeUrl}&background=random&color=fff&size=150`);
 
-                    const cardHTML = `
-                        <div class="card">
-                            <a href="${primeiroLink}" target="_blank" class="avatar-link">
-                                <img class="avatar" 
-                                     src="${primeiroLink}" 
-                                     data-urls="${stringDeLinks}"
-                                     data-index="0"
-                                     onerror="tentarProximaImagem(this)" 
-                                     alt="Foto de ${nome}" loading="lazy">
-                            </a>
-                            <div class="info">
-                                <p><strong>Nome:</strong> ${nome}</p>
-                                ${linhaApelidoHTML}
-                                <p><strong>Local:</strong> ${local}</p>
-                                <p><strong>Ocupação:</strong> ${ocupacao}</p>
+                        listaDeLinks = [...new Set(listaDeLinks)];
+                        const stringDeLinks = listaDeLinks.join(',');
+                        const primeiroLink = listaDeLinks[0];
+
+                        const cardHTML = `
+                            <div class="card">
+                                <a href="${primeiroLink}" target="_blank" class="avatar-link">
+                                    <img class="avatar" 
+                                         src="${primeiroLink}" 
+                                         data-urls="${stringDeLinks}"
+                                         data-index="0"
+                                         onerror="tentarProximaImagem(this)" 
+                                         alt="Foto de ${nome}" loading="lazy">
+                                </a>
+                                <div class="info">
+                                    <p><strong>Nome:</strong> ${nome}</p>
+                                    ${linhaApelidoHTML}
+                                    <p><strong>Local:</strong> ${local}</p>
+                                    <p><strong>Ocupação:</strong> ${ocupacao}</p>
+                                </div>
+                                <p class="summary">${resumo}</p>
                             </div>
-                            <p class="summary">${resumo}</p>
-                        </div>
-                    `;
-                    
-                    container.innerHTML += cardHTML;
+                        `;
+                        
+                        container.innerHTML += cardHTML;
+                    }
+                },
+                error: function(error) {
+                    console.log('Aguardando próxima atualização...');
                 }
-            },
-            error: function(error) {
-                document.getElementById('loading').innerHTML = '❌ Erro ao ler a planilha. Tente atualizar a página.';
-            }
-        });
+            });
+        }
+
+        // 1. Carrega as cartas assim que a pessoa entra no site
+        carregarPersonagens();
+
+        // 2. O Relógio Mágico: Repete a função a cada 60000 milissegundos (60 segundos)
+        setInterval(carregarPersonagens, 60000);
+
     </script>
 </body>
 </html>
